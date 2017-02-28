@@ -1,0 +1,307 @@
+<?php include("DBconnection.php");?>
+<!doctype html>
+<html ng-app>
+<head>
+<meta charset="utf-8">
+<title>CATAPI</title>
+<style>
+.field {text-align:right; line-height:25px;padding-right:100px;}
+label {float:left; background:darkmagenta;color:white;font-weight:bold;}
+.main {float:left;}
+#zapros1{visibility:hidden;}
+a{color:white;xt-decoration:none;}
+.inp{
+color:white;
+}
+#fileInput
+{
+background:darkmagenta;
+color:red;font-weight:bold;
+display:none;
+} 
+input[type=submit],[type=button]{
+color:white;
+font-weight:bold;
+    padding:5px 15px; 
+    background:blue; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+input[type=text],[type=number]{
+ font: 18px bold;
+ font-family:arial;
+
+}
+.rb{
+font-weight: bold;
+color:white; 
+    background:navy;
+    float:center;
+    
+}
+#f{
+background:lightgreen; 
+align:right;
+}
+#about
+{
+background:black;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script>
+function openFileOption()
+{
+  document.getElementById("fileInput").click();
+}
+function SetAnd()
+{
+ var radio1=document.getElementById('I');
+ var radio2=document.getElementById('ILI');
+ if(true==radio1.checked)
+ {
+    radio2.checked=false;
+ }
+}
+function SetOr()
+{
+ var radio1=document.getElementById('I');
+ var radio2=document.getElementById('ILI');
+ if(true==radio2.checked)
+ {
+    radio1.checked=false;
+ }
+}
+function ActGet()
+{
+var forma=document.getElementById('f');
+forma.action="Get.php";
+}
+function ActInsert()
+{
+var forma=document.getElementById('f');
+forma.action="Insert.php";
+}
+function ActDelete()
+{
+var forma=document.getElementById('f');
+forma.action="Delete.php";
+}
+function ActChange()
+{
+   var _id=document.getElementById('_id');
+   var  _name=document.getElementById('NAME');
+   var _age=document.getElementById('age');
+   var _spec=document.getElementById('spec');
+   var _color=document.getElementById('clr');
+   var _pic=document.getElementById('Pic');
+   
+   _id.style.backgroundColor = "yellow";
+   _name.style.backgroundColor = "yellow";
+   _age.style.backgroundColor = "yellow";
+   _spec.style.backgroundColor = "yellow";
+   _color.style.backgroundColor = "yellow"; 
+   _pic.style.backgroundColor = "yellow";
+   
+   var lid=document.getElementById('zid');
+   var lname=document.getElementById('zname');
+   var lage=document.getElementById('zage');
+   var lspec=document.getElementById('zspec');
+   var lcolor=document.getElementById('zcolor');
+   var lpic=document.getElementById('zpic');
+   
+   lid.value=_id.value;
+   lname.value=_name.value;
+   lage.value=_age.value;
+   lspec.value=_spec.value;
+   lcolor.value=_color.value;
+   lpic.value=_pic.value;
+   //alert(sql);
+}
+function ActUpdate()
+{
+var cId=document.getElementById('chId');
+var cName=document.getElementById('chName');
+var cAge=document.getElementById('chAge');
+var cSpec=document.getElementById('chSpec');
+var cColor=document.getElementById('chColor');
+var cPic=document.getElementById('chPic');
+
+ var forma=document.getElementById('f');
+ var radio1=document.getElementById('I');
+ 
+ var newid=document.getElementById('_id');
+   var newname=document.getElementById('NAME');
+   var newage=document.getElementById('age');
+   var newspec=document.getElementById('spec');
+   var newcolor=document.getElementById('clr');
+   var newpic=document.getElementById('Pic');
+   
+   newid.style.backgroundColor = "white";
+   newname.style.backgroundColor = "white";
+   newage.style.backgroundColor = "white";
+   newspec.style.backgroundColor = "white";
+   newcolor.style.backgroundColor = "white";
+   newpic.style.backgroundColor = "white";
+    
+   var lid=document.getElementById('zid');
+   var lname=document.getElementById('zname');
+   var lage=document.getElementById('zage');
+   var lspec=document.getElementById('zspec');
+   var lcolor=document.getElementById('zcolor');
+   var lpic=document.getElementById('zpic');
+   
+   var sql="UPDATE cats SET ID='"+newid.value+"',Name='"+newname.value+"',Age='"+newage.value+"',Species='"+newspec.value+"',Color='"+newcolor.value+"',Picture='"+newpic.value+"'";
+ 
+	//ID
+        sql+=" WHERE ID='"+lid.value+"'";
+	//Name
+	if (cName.checked) 
+	{
+	if(radio1.checked)
+	{
+           sql+=" AND Name='"+lname.value+"'";
+        }
+	else
+	{
+	   sql+=" OR Name='"+lname.value+"'";
+	}
+	}
+	//Age
+	if (cAge.checked) 
+	{
+	if(radio1.checked)
+	{
+           sql+=" AND Age='"+lage.value+"'";
+        }
+	else
+	{
+	   sql+=" OR Age='"+lage.value+"'";
+	}
+	}
+	//Species
+	if (cSpec.checked) 
+	{
+	if(radio1.checked)
+	{
+           sql+=" AND Species='"+lspec.value+"'";
+        }
+	else
+	{
+	   sql+=" OR Species='"+lspec.value+"'";
+	}
+	}
+	//Color
+	if (cColor.checked) 
+	{
+	if(radio1.checked)
+	{
+           sql+=" AND Color='"+lcolor.value+"'";
+        }
+	else
+	{
+	   sql+=" OR Color='"+lcolor.value+"'";
+	}
+	}
+	//Picture
+	if (cPic.checked) 
+	{
+	if(radio1.checked)
+	{
+           sql+=" AND Picture='"+lpic.value+"'";
+        }
+	else
+	{
+	   sql+=" OR Picture='"+lpic.value+"'";
+	}
+	}
+	var z=document.getElementById('zapros1');
+	z.value=sql;
+	//alert(sql);
+    forma.action="Update.php";
+}
+function selall()
+{
+document.getElementById('chId').checked=true;
+document.getElementById('chName').checked=true;
+document.getElementById('chAge').checked=true;
+document.getElementById('chSpec').checked=true;
+document.getElementById('chColor').checked=true;
+document.getElementById('chPic').checked=true;
+}
+function resetall()
+{
+document.getElementById('chId').checked=false;
+document.getElementById('chName').checked=false;
+document.getElementById('chAge').checked=false;
+document.getElementById('chSpec').checked=false;
+document.getElementById('chColor').checked=false;
+document.getElementById('chPic').checked=false;
+}
+function updateFileName() {
+        var img1 = document.getElementById('fileInput');
+        var file_name = document.getElementById('Pic');
+	var fileNameIndex = img1.value.lastIndexOf("\\");
+        file_name.value = img1.value.substring(fileNameIndex + 1);
+    }
+    function ActAbout()
+    {
+    alert("This program developed for working with database which contains information about cats.\nJust hover your mouse pointer to any element on the form to got hints about working in this program.");
+    }
+</script>
+</head>
+<body>
+<h1>Cats Database <br/><input type="submit" id="about" ng-model="about" onclick="ActAbout()" value="ABOUT PROGRAM"/></h1>
+<div  class="main" ng-app="myApp" ng-controller="formCtrl">
+  <form id="f" method="POST"> &nbsp
+     <input title="Insert new data to Database" type="submit" ng-model="bIns" onclick="ActInsert()" value="INSERT">
+     <input title="Get excisting data from Database" type="submit" ng-model="bGet" onclick="ActGet()" value="GET">
+     <input title="Change specified data in Database" type="button" ng-model="bChn" onclick="ActChange()" value="CHANGE">
+     <input title="Update database with new Data" type="submit" ng-model="bUpd" onclick="ActUpdate()" value="UPDATE">
+     <input title="Delete excsisting data from Database" type="submit" ng-model="bDel" onclick="ActDelete()" value="DELETE">
+     <br/><br/>
+    <div class="field"><label > &nbsp &nbsp &nbsp  ID &nbsp &nbsp &nbsp &nbsp </label> &nbsp <input title="Input data here" align="center" id="_id" name="_ID" type="number" min="1" ng-model="user.ID">
+    <input title="Check it if you want use this data in work with Database or uncheck in otherwise" type="checkbox" id="chId" name="chId" ng-model="myVar1"></div>
+    <br/><br/>
+    
+    <div class="field"><label>&nbsp &nbsp Name &nbsp &nbsp </label> &nbsp <input title="Input data here" align="center" id="NAME" type="text" name="_Name" ng-model="user.Name">
+    <input title="Check it if you want use this data in work with Database or uncheck in otherwise" type="checkbox" id="chName" name="chName" ng-model="myVar2"></div>
+    <br/><br/>
+    
+    <div class="field"><label>&nbsp &nbsp  Age  &nbsp &nbsp &nbsp &nbsp </label> &nbsp <input title="Input data here" align="center" id="age" type="text" name="_Age" ng-model="user.Age">
+    <input title="Check it if you want use this data in work with Database or uncheck in otherwise" type="checkbox" id="chAge" name="chAge" ng-model="myVar3"></div>
+    <br/><br/>
+    
+    <div class="field"><label> &nbsp &nbsp Species &nbsp </label>&nbsp <input title="Input data here" align="center" id="spec" type="text" name="_Species" ng-model="user.Species">
+    <input title="Check it if you want use this data in work with Database or uncheck in otherwise" type="checkbox" id="chSpec" name="chSpec" ng-model="myVar4"></div>
+    <br/><br/>
+    
+    <div class="field"><label> &nbsp &nbsp Color &nbsp &nbsp </label>&nbsp <input title="Input data here" align="center" id="clr" type="text" name="_Color" ng-model="user.Color">
+    <input title="Check it if you want use this data in work with Database or uncheck in otherwise" type="checkbox" id="chColor" name="chColor" ng-model="myVar5"></div><br/><br/>
+    
+     <div class="field"><input id="fileInput" type="file"  onchange="updateFileName()" /><label title="Press to input picture"><a href="#" id="aa" onclick="openFileOption();return;"> &nbsp Picture &nbsp &nbsp </a></label>
+     <input align="center" id="Pic" name="_Picture" type="text" readonly ng-model="user.Pic">
+     <input title="Check it if you want use this data in work with Database or uncheck in otherwise" type="checkbox" id="chPic" name="chPic" ng-model="myVar8"></div>
+     
+     <br/><br/> &nbsp &nbsp
+    <input type="button" id="bALL" onclick="selall()" name="bALL" ng-model="myVar6" value="Select All Fields">
+    <input type="button" id="bResALL" onclick="resetall()" name="bResALL" ng-model="myVar7" value="Reset All Checked Fields">
+    <br/><br/>
+    
+    <div class="rb"  >
+    <input type="radio" name="rAND" id="I"  onclick="SetAnd()" ng-model="rAnd">Only Records With Specified Data  </input></div>
+    <div class="rb"  >
+    <input type="radio" name="rOR" checked id="ILI" onclick="SetOr()" ng-model="rOr">Any Records With Specified Data &nbsp </input></div>
+    <input type="text" id="zapros1" name="zapros1">
+    <label value="" id="zid" name="zid"></label>
+    <label value="" id="zname" name="zname"></label>
+    <label value="" id="zage" name="zage"></label>
+    <label value="" id="zspec" name="zspec"></label>
+    <label value="" id="zcolor" name="zcolor"></label>
+    <label value="" id="zpic" name="zpic"></label>
+  </form>
+</div>
+</body>
+</html>
