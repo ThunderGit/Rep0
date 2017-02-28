@@ -1,5 +1,5 @@
-﻿<?php
-
+<?php
+ob_start();
 $sql=$_POST['zapros1'];
 
 //echo $sql;
@@ -15,11 +15,13 @@ $numrows=mysql_num_rows($query);
 
 if($query)
 {
-	 echo "UPDATE Querry executed successfully!";
+       ob_end_clean();
+	 echo "<br/> All specified data has been successfully updated in database!";
 }
 else
  {
-	 echo "Failed to execute UPDATE Querry!";
+  ob_end_clean();
+	 echo "<br/> Update Error!!";
  }
 ?>
 <!DOCTYPE HTML>
@@ -27,11 +29,22 @@ else
 
 <head>
   <meta charset="utf-8">
+  <style>
+  input[type=submit],[type=button]{
+color:white;
+font-weight:bold;
+    padding:5px 15px; 
+    background:blue; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}</style>
   <script>
   function _back()
   {
    var f=document.getElementById('forma');
-   f.action="Angul.html";
+   f.action="index.html";
   }
   </script>
 </head>
